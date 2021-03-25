@@ -1,0 +1,42 @@
+version: 2.1
+
+orbs:
+  win: circleci/windows@2
+  docker: circleci/docker@1
+
+jobs:
+  build:
+   executor: win/default
+   steps:
+     - checkout
+     - run:
+        name: build dotnet project
+        command: dotnet build ./API-Gateway
+     
+  dockerhub-deploy:
+    executor: docker/docker
+    steps:
+     - setup_remote_docker
+     - checkout
+     - docker/check
+     - docker/build:
+        image: redeamerz/lifelinks-apigateway
+        path: ./API-Gateway
+        docker-context: ./API-Gateway
+     - docker/push:
+        image: redeamerz/lifelinks-apigateway
+    
+
+workflows:
+  version: 2
+  build-and-publish:
+    jobs:
+      - build
+      - dockerhub-deploy:
+          context: Development
+          requires:
+            - build
+          filters:
+            branches:
+              only:
+                - main
