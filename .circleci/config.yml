@@ -23,12 +23,13 @@ jobs:
         image: redeamerz/lifelinks-apigateway
         path: ./API-Gateway
         docker-context: ./API-Gateway
+        tag: latest
      - docker/push:
         image: redeamerz/lifelinks-apigateway
+        tag: latest
     
 
 workflows:
-  version: 2
   build-and-publish:
     jobs:
       - build
