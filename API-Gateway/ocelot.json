@@ -69,7 +69,7 @@
 			"UpstreamHttpMethod": [ "Delete" ],
 			"AuthenticationOptions": {
 				"AuthenticationProviderKey": "TestKey",
-				"AllowedScopes": ["openid"]
+				"AllowedScopes": [ "openid" ]
 			}
 		}
 	],

@@ -3,6 +3,7 @@ version: 2.1
 orbs:
   win: circleci/windows@2
   docker: circleci/docker@1
+  k8s: digitalocean/k8s@0.1.1
 
 jobs:
   build:
@@ -23,11 +24,26 @@ jobs:
         image: redeamerz/lifelinks-apigateway
         path: ./API-Gateway
         docker-context: ./API-Gateway
-        tag: latest
+        tag: 'latest,$CIRCLE_SHA1$'
      - docker/push:
         image: redeamerz/lifelinks-apigateway
-        tag: latest
-    
+        tag: 'latest,$CIRCLE_SHA1'
+  
+  kubernetes-deploy:
+    executor: default
+    steps:
+      - checkout
+      - k8s/install
+      - k8s/initialize:
+          cluster: do-ams3-lifelinks-cluster
+      - run:
+          name: kubernetes apply schema
+          command: kubectl apply -f kubernetes
+      - run:
+          name: kubernetes rollout update
+          command: kubectl set image deployments/apigateway apigateway=docker.io/redeamerz/lifelinks-apigateway:$CIRCLE_SHA1$
+
+
 
 workflows:
   build-and-publish:
@@ -37,6 +53,14 @@ workflows:
           context: Development
           requires:
             - build
+          filters:
+            branches:
+              only:
+                - main
+      - kubernetes-deploy:
+          context: KubernetesCluster
+          requires:
+            - dockerhub-deploy
           filters:
             branches:
               only:
