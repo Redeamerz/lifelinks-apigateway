@@ -24,7 +24,7 @@
 					"Port": 80
 				}
 			],
-			"UpstreamPathTemplate": "/api/connect/{everything}",
+			"UpstreamPathTemplate": "/connect/{everything}",
 			"UpstreamHttpMethod": [
 				"Post"
 			]
