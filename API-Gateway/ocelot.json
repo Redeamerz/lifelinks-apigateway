@@ -28,6 +28,38 @@
 			"UpstreamHttpMethod": [
 				"Post"
 			]
+		},
+		{
+			"DownstreamPathTemplate": "/api/post",
+			"DownstreamScheme": "http",
+			"DownstreamHostAndPorts": [
+				{
+					"Host": "postservice",
+					"Port": 80
+				}
+			],
+			"UpstreamPathTemplate": "/api/post",
+			"UpstreamHttpMethod": [
+				"Get",
+				"Delete"
+			]
+		},
+		{
+			"DownstreamPathTemplate": "/api/post/{everything}",
+			"DownstreamScheme": "http",
+			"DownstreamHostAndPorts": [
+				{
+					"Host": "postservice",
+					"Port": 80
+				}
+			],
+			"UpstreamPathTemplate": "/api/post/{everything}",
+			"UpstreamHttpMethod": [
+				"Get",
+				"Post",
+				"Delete",
+				"Put"
+			]
 		}
 	],
 	"GlobalConfiguration": {}
