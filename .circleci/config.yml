@@ -7,43 +7,46 @@ orbs:
 
 jobs:
   build:
-   executor: win/default
-   steps:
-     - checkout
-     - run:
-        name: build dotnet project
-        command: dotnet build ./API-Gateway
-     
+    executor: win/default
+    steps:
+      - checkout
+      - run:
+          name: build dotnet project
+          command: dotnet build ./API-Gateway
+
   dockerhub-deploy:
     executor: docker/docker
     steps:
-     - setup_remote_docker
-     - checkout
-     - docker/check
-     - docker/build:
-        image: redeamerz/lifelinks-apigateway
-        path: ./API-Gateway
-        docker-context: ./API-Gateway
-        tag: 'latest,$CIRCLE_SHA1$'
-     - docker/push:
-        image: redeamerz/lifelinks-apigateway
-        tag: 'latest,$CIRCLE_SHA1'
-  
+      - setup_remote_docker
+      - checkout
+      - docker/check
+      - docker/build:
+          image: redeamerz/lifelinks-apigateway
+          path: ./API-Gateway
+          docker-context: ./API-Gateway
+          tag: "latest"
+      - docker/build:
+          image: redeamerz/lifelinks-apigateway
+          path: ./API-Gateway
+          docker-context: ./API-Gateway
+          tag: "$CIRCLE_SHA1"
+      - docker/push:
+          image: redeamerz/lifelinks-apigateway
+          tag: "latest,$CIRCLE_SHA1"
+
   kubernetes-deploy:
-    executor: default
+    executor: docker/docker
     steps:
       - checkout
       - k8s/install
       - k8s/initialize:
-          cluster: do-ams3-lifelinks-cluster
+          cluster: lifelinks-cluster
       - run:
           name: kubernetes apply schema
           command: kubectl apply -f kubernetes
       - run:
           name: kubernetes rollout update
-          command: kubectl set image deployments/apigateway apigateway=docker.io/redeamerz/lifelinks-apigateway:$CIRCLE_SHA1$
-
-
+          command: kubectl set image deployments/apigateway apigateway=docker.io/redeamerz/lifelinks-apigateway:$CIRCLE_SHA1 -n lifelinks
 
 workflows:
   build-and-publish:
