@@ -1,78 +1,34 @@
 {
-	"ReRoutes": [
+	"Routes": [
 		{
-			"DownstreamPathTemplate": "/api/account/register",
+			"DownstreamPathTemplate": "/api/account/{everything}",
 			"DownstreamScheme": "http",
 			"DownstreamHostAndPorts": [
 				{
-					"Host": "auth.lifelinks.nl",
+					"Host": "identityservice",
 					"Port": 80
 				}
 			],
-			"UpstreamPathTemplate": "/api/account/register",
-			"UpstreamHttpMethod": [ "Post" ]
+			"UpstreamPathTemplate": "/api/account/{everything}",
+			"UpstreamHttpMethod": [
+				"Get",
+				"Post"
+			]
 		},
 		{
-			"DownstreamPathTemplate": "/connect/token",
+			"DownstreamPathTemplate": "/connect/{everything}",
 			"DownstreamScheme": "http",
 			"DownstreamHostAndPorts": [
 				{
-					"Host": "auth.lifelinks.nl",
+					"Host": "identityservice",
 					"Port": 80
 				}
 			],
-			"UpstreamPathTemplate": "/api/account/login",
-			"UpstreamHttpMethod": [ "Post" ]
-		},
-		{
-			"DownstreamPathTemplate": "/api/post",
-			"DownstreamScheme": "http",
-			"DownstreamHostAndPorts": [
-				{
-					"Host": "post.lifelinks.nl",
-					"Port": 80
-				}
-			],
-			"UpstreamPathTemplate": "/api/post",
-			"UpstreamHttpMethod": [ "Get", "Post", "Put" ],
-			"AuthenticationOptions": {
-				"AuthenticationProviderKey": "TestKey",
-				"AllowedScopes": []
-			}
-		},
-		{
-			"DownstreamPathTemplate": "/api/post/{everything}",
-			"DownstreamScheme": "http",
-			"DownstreamHostAndPorts": [
-				{
-					"Host": "post.lifelinks.nl",
-					"Port": 80
-				}
-			],
-			"UpstreamPathTemplate": "/api/post/{everything}",
-			"UpstreamHttpMethod": [ "Get", "Post", "Put" ],
-			"AuthenticationOptions": {
-				"AuthenticationProviderKey": "TestKey",
-				"AllowedScopes": []
-			}
-		},
-		{
-			"DownstreamPathTemplate": "/api/post",
-			"DownstreamScheme": "http",
-			"DownstreamHostAndPorts": [
-				{
-					"Host": "post.lifelinks.nl",
-					"Port": 80
-				}
-			],
-			"UpstreamPathTemplate": "/api/post",
-			"UpstreamHttpMethod": [ "Delete" ],
-			"AuthenticationOptions": {
-				"AuthenticationProviderKey": "TestKey",
-				"AllowedScopes": [ "openid" ]
-			}
+			"UpstreamPathTemplate": "/api/connect/{everything}",
+			"UpstreamHttpMethod": [
+				"Post"
+			]
 		}
 	],
-	"GlobalConfiguration": {
-	}
+	"GlobalConfiguration": {}
 }
