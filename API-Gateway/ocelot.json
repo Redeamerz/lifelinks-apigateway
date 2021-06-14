@@ -41,7 +41,9 @@
 			"UpstreamPathTemplate": "/api/post",
 			"UpstreamHttpMethod": [
 				"Get",
-				"Delete"
+				"Post",
+				"Delete",
+				"Put"
 			]
 		},
 		{
