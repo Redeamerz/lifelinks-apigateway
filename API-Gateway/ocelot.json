@@ -12,7 +12,9 @@
 			"UpstreamPathTemplate": "/api/account/{everything}",
 			"UpstreamHttpMethod": [
 				"Get",
-				"Post"
+				"Post",
+				"Put",
+				"Delete"
 			]
 		},
 		{
