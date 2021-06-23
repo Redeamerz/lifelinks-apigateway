@@ -1,3 +1,4 @@
+using IdentityServer4.AccessTokenValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -6,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 using Ocelot.Provider.Kubernetes;
+using System;
 
 namespace API_Gateway
 {
@@ -30,6 +32,20 @@ namespace API_Gateway
 						builder.WithOrigins("https://*.vercel.app").AllowAnyMethod().AllowAnyHeader();
 					});
 			});
+
+			var authenticationProviderKey = "TestKey";
+			Action<IdentityServerAuthenticationOptions> opt = o =>
+			{
+				o.Authority = "https://api.lifelinks.nl";
+				o.ApiName = "apigateway";
+				o.SupportedTokens = SupportedTokens.Both;
+				o.RequireHttpsMetadata = false;
+				o.ApiSecret = "lifelinksidentitysecret";
+			};
+
+			services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
+				.AddIdentityServerAuthentication(authenticationProviderKey, opt);
+
 
 			services.AddOcelot().AddKubernetes();
 		}
