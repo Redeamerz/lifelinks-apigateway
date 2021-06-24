@@ -81,23 +81,6 @@
 				"Delete",
 				"Put"
 			]
-		},
-		{
-			"DownstreamPathTemplate": "/api/gdpr/{everything}",
-			"DownstreamScheme": "http",
-			"DownstreamHostAndPorts": [
-				{
-					"Host": "gdprservice",
-					"Port": 80
-				}
-			],
-			"UpstreamPathTemplate": "/api/gdpr/{everything}",
-			"UpstreamHttpMethod": [
-				"Get",
-				"Post",
-				"Delete",
-				"Put"
-			]
 		}
 	],
 	"GlobalConfiguration": {}

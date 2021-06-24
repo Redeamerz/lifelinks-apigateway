@@ -25,11 +25,10 @@ namespace API_Gateway
 		{
 			services.AddCors(options =>
 			{
-				options.AddDefaultPolicy(
+				options.AddPolicy("CorsPolicy",
 					builder =>
 					{
-						builder.WithOrigins("http://localhost:3000", "https://lifelinks.nl").AllowAnyMethod().AllowAnyHeader();
-						builder.WithOrigins("https://*.vercel.app").AllowAnyMethod().AllowAnyHeader();
+						builder.WithOrigins("http://localhost:3000", "https://lifelinks.nl", "https://*.vercel.app").AllowAnyMethod().AllowAnyHeader().AllowCredentials();
 					});
 			});
 
@@ -58,9 +57,7 @@ namespace API_Gateway
 				app.UseDeveloperExceptionPage();
 			}
 
-			app.UseCors();
-
-			app.UseHttpsRedirection();
+			app.UseCors("CorsPolicy");
 
 			app.UseRouting();
 
