@@ -1,4 +1,3 @@
-using IdentityServer4.AccessTokenValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -28,22 +27,22 @@ namespace API_Gateway
 				options.AddPolicy("CorsPolicy",
 					builder =>
 					{
-						builder.WithOrigins("http://localhost:3000", "https://lifelinks.nl", "https://*.vercel.app").AllowAnyMethod().AllowAnyHeader().AllowCredentials();
+						builder.WithOrigins("http://localhost:3000", "https://lifelinks.nl", "https://*.vercel.app").AllowAnyMethod().AllowAnyHeader();
 					});
 			});
 
-			var authenticationProviderKey = "TestKey";
-			Action<IdentityServerAuthenticationOptions> opt = o =>
-			{
-				o.Authority = "https://api.lifelinks.nl";
-				o.ApiName = "apigateway";
-				o.SupportedTokens = SupportedTokens.Both;
-				o.RequireHttpsMetadata = false;
-				o.ApiSecret = "lifelinksidentitysecret";
-			};
+			//var authenticationProviderKey = "TestKey";
+			//Action<IdentityServerAuthenticationOptions> opt = o =>
+			//{
+			//	o.Authority = "https://api.lifelinks.nl";
+			//	o.ApiName = "apigateway";
+			//	o.SupportedTokens = SupportedTokens.Both;
+			//	o.RequireHttpsMetadata = false;
+			//	o.ApiSecret = "lifelinksidentitysecret";
+			//};
 
-			services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
-				.AddIdentityServerAuthentication(authenticationProviderKey, opt);
+			//services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
+			//	.AddIdentityServerAuthentication(authenticationProviderKey, opt);
 
 
 			services.AddOcelot().AddKubernetes();
@@ -62,8 +61,6 @@ namespace API_Gateway
 			app.UseRouting();
 
 			app.UseAuthorization();
-
-			app.UseAuthentication();
 
 			app.UseOcelot().Wait();
 
